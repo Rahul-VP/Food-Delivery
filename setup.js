@@ -34,7 +34,7 @@ if (!fs.existsSync(envPath)) {
     log('📝 Creating .env file...', 'yellow');
     
     const envContent = `# Database Configuration
-MONGODB_URI=mongodb+srv://your_username:your_password@cluster0.gr6lr.mongodb.net/tomato-food-delivery
+MONGODB_URI=your_MONGODB_URI
 
 # JWT Configuration
 JWT_SECRET=your_super_secret_jwt_key_change_this_in_production
