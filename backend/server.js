@@ -1,39 +1,48 @@
-import express from "express"
-import cors from 'cors'
-import { connectDB } from "./config/db.js"
-import userRouter from "./routes/userRoute.js"
-import foodRouter from "./routes/foodRoute.js"
-import 'dotenv/config'
-import cartRouter from "./routes/cartRoute.js"
-import orderRouter from "./routes/orderRoute.js"
+// server.js or index.js
+import express from "express";
+import cors from 'cors';
+import { connectDB } from "./config/db.js";
+import userRouter from "./routes/userRoute.js";
+import foodRouter from "./routes/foodRoute.js";
+import 'dotenv/config';
+import cartRouter from "./routes/cartRoute.js";
+import orderRouter from "./routes/orderRoute.js";
 
-// app config
-const app = express()
+// App config
+const app = express();
 const port = process.env.PORT || 4000;
 
-// CORS configuration for production
+//  CORS Configuration
+const allowedOrigins = [
+    process.env.FRONTEND_URL || 'http://localhost:5173',
+    process.env.ADMIN_URL || 'http://localhost:5174',
+    'https://food-delivery-three-sable.vercel.app',
+    'https://foodiee-admin.vercel.app'
+];
+
 const corsOptions = {
-    origin: [
-        process.env.FRONTEND_URL || 'http://localhost:5173',
-        process.env.ADMIN_URL || 'http://localhost:5174',
-        'https://foodiee-frontend.vercel.app', // Your Vercel frontend domain
-        'https://foodiee-admin.vercel.app'     // Your Vercel admin domain
-    ],
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error(`CORS error: ${origin} not allowed`));
+        }
+    },
     credentials: true,
     optionsSuccessStatus: 200,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'token']
+    allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization']
 };
 
-// middlewares
-app.use(express.json({ limit: '10mb' }))
-app.use(express.urlencoded({ extended: true, limit: '10mb' }))
-app.use(cors(corsOptions))
+//  Middlewares
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(cors(corsOptions));
 
-// Static file serving
-app.use("/images", express.static('uploads'))
+//  Static files (images)
+app.use("/images", express.static('uploads'));
 
-// Health check endpoint
+//  Health check
 app.get("/health", (req, res) => {
     res.status(200).json({ 
         status: "OK", 
@@ -43,13 +52,13 @@ app.get("/health", (req, res) => {
     });
 });
 
-// API endpoints
-app.use("/api/user", userRouter)
-app.use("/api/food", foodRouter)
-app.use("/api/cart", cartRouter)
-app.use("/api/order", orderRouter)
+//  Routes
+app.use("/api/user", userRouter);
+app.use("/api/food", foodRouter);
+app.use("/api/cart", cartRouter);
+app.use("/api/order", orderRouter);
 
-// Root endpoint
+//  Root endpoint
 app.get("/", (req, res) => {
     res.json({ 
         message: "🍅 Tomato Food Delivery API", 
@@ -65,7 +74,7 @@ app.get("/", (req, res) => {
     });
 });
 
-// 404 handler
+//  404 Not Found
 app.use("*", (req, res) => {
     res.status(404).json({ 
         success: false, 
@@ -73,7 +82,7 @@ app.use("*", (req, res) => {
     });
 });
 
-// Global error handler
+//  Global Error Handler
 app.use((error, req, res, next) => {
     console.error("❌ Server Error:", error);
     res.status(500).json({ 
@@ -83,7 +92,7 @@ app.use((error, req, res, next) => {
     });
 });
 
-// Start server
+//  Start Server
 const startServer = async () => {
     try {
         await connectDB();
