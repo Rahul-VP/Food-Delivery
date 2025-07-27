@@ -1,0 +1,107 @@
+.food-display {
+    margin: 40px auto;
+    padding: 40px;
+    background: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    max-width: 1200px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.food-display h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--secondary-color);
+    margin-bottom: 8px;
+    text-align: center;
+    position: relative;
+}
+
+.food-display h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background: var(--primary-color);
+    border-radius: 2px;
+}
+
+.food-display-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    margin-top: 40px;
+    gap: 30px;
+    row-gap: 40px;
+    width: 100%;
+}
+
+.no-food-message {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--dark-gray);
+}
+
+.no-food-message p:first-child {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--secondary-color);
+}
+
+.no-food-message p:last-child {
+    font-size: 1rem;
+    opacity: 0.8;
+}
+
+@media (max-width: 1200px) {
+    .food-display {
+        margin: 30px 10px;
+        padding: 30px 8px;
+    }
+    .food-display h2 {
+        font-size: 2.2rem;
+    }
+    .food-display-list {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 25px;
+    }
+}
+
+@media (max-width: 900px) {
+    .food-display {
+        margin: 25px 4px;
+        padding: 25px 4px;
+    }
+    .food-display h2 {
+        font-size: 2rem;
+    }
+    .food-display-list {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 18px;
+    }
+}
+
+@media (max-width: 600px) {
+    .food-display {
+        margin: 10px 0;
+        padding: 10px 0;
+    }
+    .food-display h2 {
+        font-size: 1.3rem;
+    }
+    .food-display-list {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        row-gap: 16px;
+    }
+    .no-food-message {
+        padding: 30px 4px;
+    }
+}
