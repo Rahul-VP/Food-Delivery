@@ -179,7 +179,7 @@
 }
 
 .food-item-price::before {
-    content: '$';
+    content: '₹';
     font-size: 1rem;
     opacity: 0.7;
 }
